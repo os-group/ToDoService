@@ -6,19 +6,22 @@ import { ActivatedRoute } from '@angular/router';
 @Component({
   selector: 'app-todoitem-detail',
   templateUrl: './todoitem-detail.component.html',
-  styleUrls: ['./todoitem-detail.component.scss'],
+  styleUrls: ['./todoitem-detail.component.scss']
 })
 export class TodoitemDetailComponent implements OnInit {
-  todoItem: ToDoItem = new ToDoItem(0, '', '', false);
+
+  public todoItem: ToDoItem = {} as ToDoItem;
 
   constructor(
     public todoService: TodoService,
-    private activedRoute: ActivatedRoute
-  ) {}
+    private activatedRoute: ActivatedRoute
+  ) { }
 
   ngOnInit(): void {
-    const id = this.activedRoute.snapshot.paramMap.get('id');
-    console.log(id);
-    this.todoItem = this.todoService.findById(Number(id));
+    const id = this.activatedRoute.snapshot.paramMap.get('id');
+    this.todoService.findById(Number(id)).subscribe((res: ToDoItem) => {
+      this.todoItem = res;
+    });
+    
   }
 }

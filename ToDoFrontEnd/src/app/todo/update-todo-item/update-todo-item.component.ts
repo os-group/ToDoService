@@ -1,25 +1,27 @@
-import { ActivatedRoute } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { TodoService } from '../../service/todo.service';
 import { ToDoItem } from '../../model/ToDoItem';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-update-todo-item',
   templateUrl: './update-todo-item.component.html',
-  styleUrls: ['./update-todo-item.component.scss'],
+  styleUrls: ['./update-todo-item.component.scss']
 })
 export class UpdateTodoItemComponent implements OnInit {
-  todoItem: ToDoItem = new ToDoItem(0, '', '', false);
+  
+  public todoItem: ToDoItem = {} as ToDoItem;
 
   constructor(
     public todoService: TodoService,
     private activatedRoute: ActivatedRoute
-  ) {}
+  ) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void { 
     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    console.log(id);
-    this.todoItem = this.todoService.findById(Number(id));
+    this.todoService.findById(Number(id)).subscribe(res => {
+      this.todoItem = res;
+    });
   }
 
   update(): void {
